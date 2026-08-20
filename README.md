@@ -115,6 +115,65 @@ you restart it.
    generate **Live mode** keys, and swap them into `.env.local` (and into
    Vercel's environment variables when you deploy — never commit real keys to git).
 
+## Deploying to Vercel
+
+**Before you deploy**, know what does and doesn't work there:
+- ✅ Google Sheets logging — works fine, it's just an API call
+- ✅ Razorpay checkout, verification, webhook — all work fine
+- ✅ Pending-order lookup — works **once you connect Vercel KV** (see below)
+- ❌ Local Excel logging (`lib/excelOrders.ts`) — will always fail on Vercel;
+  its serverless functions don't have a persistent filesystem to write to.
+  It'll fail silently (already wrapped in error handling) and Sheets logging
+  will still work — but don't rely on the Excel file once deployed.
+
+**Steps:**
+
+1. **Push the project to GitHub** (or GitLab/Bitbucket) — Vercel deploys from a git repo:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   ```
+   Create a new repo on GitHub, then follow its "push an existing repo" instructions.
+
+2. **Import into Vercel** — go to https://vercel.com/new, sign in, and import
+   the repo. Vercel auto-detects Next.js, no config needed.
+
+3. **Connect Vercel KV** (needed for the webhook to find pending orders):
+   - In your Vercel project → **Storage** tab → **Create Database** → **KV**
+   - Once created, connect it to this project — Vercel automatically injects
+     `KV_REST_API_URL` and related env vars, no manual copying needed
+
+4. **Add your other environment variables** — Project → **Settings →
+   Environment Variables**, add each of these (same values as your
+   `.env.local`):
+   ```
+   RAZORPAY_KEY_ID
+   RAZORPAY_KEY_SECRET
+   RAZORPAY_WEBHOOK_SECRET
+   GOOGLE_SERVICE_ACCOUNT_EMAIL
+   GOOGLE_PRIVATE_KEY
+   GOOGLE_SHEET_ID
+   ```
+   For `GOOGLE_PRIVATE_KEY`, paste it exactly as it is in `.env.local`
+   (with the `\n` sequences) — Vercel handles it the same way.
+
+5. **Deploy.** Vercel builds and gives you a live URL
+   (`your-project.vercel.app`), or connect a custom domain under
+   **Settings → Domains**.
+
+6. **Update the Razorpay webhook URL** — go back to Razorpay Dashboard →
+   Settings → Webhooks, edit the webhook you set up earlier, and change the
+   URL from your ngrok tunnel to your real production URL:
+   `https://your-project.vercel.app/api/razorpay/webhook`
+   (the webhook secret stays the same — you don't need to regenerate it,
+   just make sure it matches what's in Vercel's env vars)
+
+7. **Go live for real payments**: switch Razorpay to Live mode (complete
+   their KYC/activation if you haven't), generate Live mode API keys, and
+   replace the Test mode keys in Vercel's env vars with the Live ones.
+   Do a real small test order yourself before announcing the store.
+
 ## What's implemented
 
 - **Home** (`/`) — hero section + product grid, cards link to their detail page
