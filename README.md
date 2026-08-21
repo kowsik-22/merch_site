@@ -70,10 +70,9 @@ the tab (or lose signal) before the browser finishes talking to your server,
 the order would otherwise never get logged — even though they were genuinely
 charged. Razorpay webhooks fix this: Razorpay's own servers call your server
 directly the instant a payment is captured, independent of the customer's
-browser. This is why order logging (`lib/excelOrders.ts` /
-`lib/googleSheets.ts`) now happens in `app/api/razorpay/webhook/route.ts`
-instead of in `verify-payment` — the browser-side call is just for a fast
-redirect to the confirmation page.
+browser. This is why order logging (`lib/googleSheets.ts`) now happens in
+`app/api/razorpay/webhook/route.ts` instead of in `verify-payment` — the
+browser-side call is just for a fast redirect to the confirmation page.
 
 **Set it up:**
 
@@ -120,11 +119,7 @@ you restart it.
 **Before you deploy**, know what does and doesn't work there:
 - ✅ Google Sheets logging — works fine, it's just an API call
 - ✅ Razorpay checkout, verification, webhook — all work fine
-- ✅ Pending-order lookup — works **once you connect Vercel KV** (see below)
-- ❌ Local Excel logging (`lib/excelOrders.ts`) — will always fail on Vercel;
-  its serverless functions don't have a persistent filesystem to write to.
-  It'll fail silently (already wrapped in error handling) and Sheets logging
-  will still work — but don't rely on the Excel file once deployed.
+- ✅ Pending-order lookup — works **once you connect Upstash Redis** (see below)
 
 **Steps:**
 

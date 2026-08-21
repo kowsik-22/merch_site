@@ -3,6 +3,9 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import CursorGlow from "@/components/CursorGlow";
+import CartToast from "@/components/CartToast";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -24,8 +27,11 @@ export default function RootLayout({
     <html lang="en" className={nunito.variable}>
       <body className="min-h-screen bg-space font-display">
         <CartProvider>
+          <CursorGlow />
           <Navbar />
           {children}
+          <Footer />
+          <CartToast />
         </CartProvider>
       </body>
     </html>

@@ -8,12 +8,15 @@ const NAV_LINKS = [
   { label: "HOME", href: "/" },
   { label: "SHOP", href: "/#collection" },
   { label: "COLLECTIONS", href: "/#collection" },
-  { label: "ABOUT", href: "/about" },
-  { label: "CONTACT", href: "/contact" },
 ];
 
 export default function Navbar() {
   const { itemCount } = useCart();
+
+  function scrollToFooter(e: React.MouseEvent) {
+    e.preventDefault();
+    document.getElementById("site-footer")?.scrollIntoView({ behavior: "smooth" });
+  }
 
   return (
     <header className="relative z-20 mx-auto flex max-w-[1920px] items-center justify-between px-6 pt-8 sm:px-10 lg:px-[110px]">
@@ -32,16 +35,33 @@ export default function Navbar() {
           <Link
             key={link.label}
             href={link.href}
-            className="text-[18px] font-semibold tracking-[2.5px] text-white/90 transition hover:text-cyan-accent lg:text-[20px]"
+            className="relative text-[18px] font-semibold tracking-[2.5px] text-white/90 transition-all duration-200 hover:text-cyan-accent hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.8)] lg:text-[20px]"
           >
             {link.label}
           </Link>
         ))}
+        <a
+          href="#site-footer"
+          onClick={scrollToFooter}
+          className="relative text-[18px] font-semibold tracking-[2.5px] text-white/90 transition-all duration-200 hover:text-cyan-accent hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.8)] lg:text-[20px]"
+        >
+          CONTACT
+        </a>
       </nav>
 
       <div className="flex items-center gap-5">
-        <Link href="/cart" aria-label="Cart" className="relative text-white/90 hover:text-cyan-accent">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <Link
+          href="/cart"
+          aria-label="Cart"
+          className="group relative text-white/90 transition-all duration-200 hover:text-cyan-accent hover:drop-shadow-[0_0_12px_rgba(0,229,255,0.9)]"
+        >
+          <svg
+            width="34"
+            height="34"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="transition-transform duration-200 group-hover:scale-110"
+          >
             <path
               d="M4 6h2l1.5 10.5A2 2 0 0 0 9.48 18H18a2 2 0 0 0 1.96-1.6L21 8H6.5"
               stroke="currentColor"
@@ -53,7 +73,7 @@ export default function Navbar() {
             <circle cx="18" cy="21" r="1.3" fill="currentColor" />
           </svg>
           {itemCount > 0 && (
-            <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-cyan-accent text-[9px] font-bold text-black">
+            <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-cyan-accent text-[10px] font-bold text-black shadow-[0_0_10px_rgba(0,229,255,0.8)]">
               {itemCount}
             </span>
           )}

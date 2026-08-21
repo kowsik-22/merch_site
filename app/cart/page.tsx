@@ -164,7 +164,7 @@ export default function CartPage() {
 
               <button
                 onClick={() => router.push("/checkout")}
-                className="mt-7 flex h-[69px] w-full items-center justify-center gap-3 rounded-[16px] border-2 border-cyan-accent bg-black text-[20px] font-extrabold tracking-[0.8px] text-white shadow-[0_0_38px_rgba(0,229,255,0.4)] transition hover:brightness-125"
+                className="mt-7 flex h-[69px] w-full items-center justify-center gap-3 rounded-[16px] border-2 border-cyan-accent bg-black text-[20px] font-extrabold tracking-[0.8px] text-white shadow-[0_0_38px_rgba(0,229,255,0.4)] transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(0,229,255,0.7)] hover:brightness-125"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.6" />

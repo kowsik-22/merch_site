@@ -149,7 +149,7 @@ export default function ProductDetailPage() {
 
             <button
               onClick={handleAddToCart}
-              className="mt-10 flex h-[69px] w-full max-w-[430px] items-center justify-center gap-3 rounded-[16px] border-2 border-cyan-accent bg-black text-[18px] font-extrabold tracking-[0.6px] text-white shadow-[0_0_38px_rgba(0,229,255,0.4)] transition hover:brightness-125"
+              className="mt-10 flex h-[69px] w-full max-w-[430px] items-center justify-center gap-3 rounded-[16px] border-2 border-cyan-accent bg-black text-[18px] font-extrabold tracking-[0.6px] text-white shadow-[0_0_38px_rgba(0,229,255,0.4)] transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(0,229,255,0.7)] hover:brightness-125"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.6" />

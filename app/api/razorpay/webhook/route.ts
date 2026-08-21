@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getPendingOrder, deletePendingOrder } from "@/lib/pendingOrders";
-import { appendOrderToExcel } from "@/lib/excelOrders";
 import { appendOrderToSheet } from "@/lib/googleSheets";
 
 // This endpoint is called by Razorpay's servers directly — not by the
@@ -77,16 +76,12 @@ export async function POST(req: NextRequest) {
     totalInRupees,
   };
 
-  const [excelResult, sheetResult] = await Promise.allSettled([
-    appendOrderToExcel(orderPayload),
-    appendOrderToSheet(orderPayload),
-  ]);
-
-  if (excelResult.status === "rejected") {
-    console.error("Failed to log order to local Excel file:", excelResult.reason);
-  }
-  if (sheetResult.status === "rejected") {
-    console.error("Failed to log order to Google Sheet:", sheetResult.reason);
+  try {
+    await appendOrderToSheet(orderPayload);
+  } catch (sheetErr) {
+    // Fails until GOOGLE_SERVICE_ACCOUNT_EMAIL / GOOGLE_PRIVATE_KEY /
+    // GOOGLE_SHEET_ID are set correctly — see README "Google Sheets setup".
+    console.error("Failed to log order to Google Sheet:", sheetErr);
   }
 
   // Only clear the pending record once we've at least attempted logging —

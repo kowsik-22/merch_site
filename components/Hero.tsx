@@ -54,7 +54,7 @@ export default function Hero({
             <div className="mt-8 flex flex-wrap gap-4">
               <button
                 onClick={onExploreCollection}
-                className="rounded-[28px] border-2 border-cyan-accent/90 bg-space-card px-8 py-4 text-[16px] font-bold tracking-[0.5px] text-[#84f2ff] shadow-[0_0_21px_2px_rgba(0,229,255,0.7)] transition hover:brightness-110"
+                className="rounded-[28px] border-2 border-cyan-accent/90 bg-space-card px-8 py-4 text-[16px] font-bold tracking-[0.5px] text-[#84f2ff] shadow-[0_0_21px_2px_rgba(0,229,255,0.7)] transition-all duration-200 hover:scale-105 hover:shadow-[0_0_35px_6px_rgba(0,229,255,0.9)] hover:brightness-110"
               >
                 EXPLORE COLLECTION
               </button>

@@ -16,6 +16,11 @@ export type CartItem = {
   quantity: number;
 };
 
+export type CartNotification = {
+  id: number;
+  productName: string;
+};
+
 type CartContextValue = {
   items: CartItem[];
   addItem: (product: Product, size: string, quantity: number) => void;
@@ -23,12 +28,15 @@ type CartContextValue = {
   updateQuantity: (cartItemId: string, quantity: number) => void;
   itemCount: number;
   subtotal: number;
+  notification: CartNotification | null;
+  dismissNotification: () => void;
 };
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [notification, setNotification] = useState<CartNotification | null>(null);
 
   function addItem(product: Product, size: string, quantity: number) {
     const cartItemId = `${product.id}-${size}`;
@@ -43,6 +51,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { cartItemId, product, size, quantity }];
     });
+
+    // id = timestamp, so the toast component can detect a fresh "add" even
+    // if the same product is added twice in a row.
+    setNotification({ id: Date.now(), productName: product.name });
+  }
+
+  function dismissNotification() {
+    setNotification(null);
   }
 
   function removeItem(cartItemId: string) {
@@ -72,7 +88,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, itemCount, subtotal }}
+      value={{
+        items,
+        addItem,
+        removeItem,
+        updateQuantity,
+        itemCount,
+        subtotal,
+        notification,
+        dismissNotification,
+      }}
     >
       {children}
     </CartContext.Provider>

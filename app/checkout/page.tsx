@@ -208,7 +208,7 @@ export default function CheckoutPage() {
                 <button
                   onClick={handlePayment}
                   disabled={isProcessing}
-                  className="mt-6 flex h-[62px] w-full items-center justify-center gap-3 rounded-[16px] border-2 border-cyan-accent bg-black text-[18px] font-extrabold tracking-[0.6px] text-white shadow-[0_0_38px_rgba(0,229,255,0.4)] transition hover:brightness-125 disabled:opacity-60"
+                  className="mt-6 flex h-[62px] w-full items-center justify-center gap-3 rounded-[16px] border-2 border-cyan-accent bg-black text-[18px] font-extrabold tracking-[0.6px] text-white shadow-[0_0_38px_rgba(0,229,255,0.4)] transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(0,229,255,0.7)] hover:brightness-125 disabled:opacity-60 disabled:hover:scale-100"
                 >
                   {isProcessing ? "PROCESSING…" : "PAY SECURELY"}
                 </button>
